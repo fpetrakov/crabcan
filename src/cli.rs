@@ -1,3 +1,5 @@
+use crate::errors::Errcode;
+
 use std::path::PathBuf;
 use structopt::StructOpt;
 
@@ -6,7 +8,7 @@ use structopt::StructOpt;
 pub struct Args {
     /// Activate debug mode
     #[structopt(short, long)]
-    pub debug: bool,
+    debug: bool,
 
     /// Command to executre inside the container
     #[structopt(short, long)]
@@ -21,9 +23,16 @@ pub struct Args {
     pub mount_dir: PathBuf,
 }
 
-pub fn parse_args() -> Args {
+pub fn parse_args() -> Result<Args, Errcode> {
     let args = Args::from_args();
-    args
+
+    if args.debug {
+        setup_log(log::LevelFilter::Debug);
+    } else {
+        setup_log(log::LevelFilter::Info);
+    }
+
+    Ok(args)
 }
 
 pub fn setup_log(level: log::LevelFilter) {

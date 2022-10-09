@@ -1,15 +1,20 @@
-use cli::setup_log;
+use std::process::exit;
 
 mod cli;
+mod errors;
+
+use cli::setup_log;
+use errors::exit_with_retcode;
 
 fn main() {
-    let args = cli::parse_args();
-
-    if args.debug {
-        setup_log(log::LevelFilter::Debug)
-    } else {
-        setup_log(log::LevelFilter::Info)
-    }
-
-    log::info!("{:?}", args);
+    let args = match cli::parse_args() {
+        Ok(args) => {
+            log::info!("{:?}", args);
+            exit_with_retcode(Ok(()))
+        }
+        Err(e) => {
+            log::error!("Error while parsing arguments:\n\t{}", e);
+            exit(e.get_retcode());
+        }
+    };
 }
