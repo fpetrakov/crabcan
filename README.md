@@ -1,2 +1,2 @@
 # crabcan (in progress)
-simple container in rust 
+Simple container in Rust built by following [this guide](https://litchipi.github.io/series/container_in_rust).
