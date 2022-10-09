@@ -26,6 +26,10 @@ pub struct Args {
 pub fn parse_args() -> Result<Args, Errcode> {
     let args = Args::from_args();
 
+    if !args.mount_dir.exists() || !args.mount_dir.is_dir() {
+        return Err(Errcode::ArgumentInvalid("mount"));
+    }
+
     if args.debug {
         setup_log(log::LevelFilter::Debug);
     } else {
