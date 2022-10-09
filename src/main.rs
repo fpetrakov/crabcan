@@ -3,11 +3,10 @@ use std::process::exit;
 mod cli;
 mod errors;
 
-use cli::setup_log;
 use errors::exit_with_retcode;
 
 fn main() {
-    let args = match cli::parse_args() {
+    match cli::parse_args() {
         Ok(args) => {
             log::info!("{:?}", args);
             exit_with_retcode(Ok(()))
