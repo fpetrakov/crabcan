@@ -1,6 +1,7 @@
 use std::process::exit;
 
 mod cli;
+mod config;
 mod errors;
 
 use errors::exit_with_retcode;
