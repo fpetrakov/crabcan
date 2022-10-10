@@ -21,3 +21,14 @@ impl Container {
         Ok(())
     }
 }
+
+pub fn start(args: Args) -> Result<(), Errcode> {
+    let mut container = Container::new(args)?;
+    if let Err(e) = container.create() {
+        container.clean_exit()?;
+        log::error!("Error while creating container: {:?}", e);
+        return Err(e);
+    }
+    log::debug!("Finished, cleaning & exit");
+    container.clean_exit()
+}
